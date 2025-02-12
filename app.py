@@ -2,12 +2,11 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 from streamlit_pdf_viewer import pdf_viewer
 
-#Projets
+# Projets
 from projets.hyge import hyge_page
 from projets.tripadvisor import tripadvisor_page
 from projets.smartrescue import smartrescue_page
 from projets.package_mnlm import mnlm_page
-
 
 # --------- CONFIGURATION DE LA PAGE -----------
 st.set_page_config(
@@ -25,27 +24,37 @@ hide_menu = """
 """
 st.markdown(hide_menu, unsafe_allow_html=True)
 
-
 def main():
     # --------- MENU LATÉRAL -----------
     st.sidebar.title("📁 Menu de navigation")
 
-    if st.sidebar.button("🚀 Accueil"):
-        st.session_state["page"] = "🚀 Accueil"
+    # Choix principal
+    main_choice = st.sidebar.selectbox("Sélectionnez une catégorie", ["🚀 Accueil", "🌟 Projet entrepreneurial", "🎓 Projets Master SISE"])
 
-    if st.sidebar.button("💪 Projet Hygé - Data Management"):
+    # Sous-sélection pour les projets Master SISE
+    if main_choice == "🎓 Projets Master SISE":
+        sub_choice = st.sidebar.selectbox("Sélectionnez un projet", [
+            "🍴 Projet TripAdvisor - NLP",
+            "🚑 Projet SmartRescue - GenAI / RAG",
+            "📊 Projet Package R - MNLM"
+        ])
+        st.session_state["page"] = sub_choice
+    elif main_choice == "🌟 Projet entrepreneurial":
         st.session_state["page"] = "💪 Projet Hygé - Data Management"
+    else:
+        st.session_state["page"] = main_choice
 
-    if st.sidebar.button("🍴 Projet TripAdvisor - NLP"):
-        st.session_state["page"] = "🍴 Projet TripAdvisor - NLP"
+    # Affichage des pages en fonction de la sélection
+    if st.session_state["page"] == "💪 Projet Hygé - Data Management":
+        hyge_page()
+    elif st.session_state["page"] == "🍴 Projet TripAdvisor - NLP":
+        tripadvisor_page()
+    elif st.session_state["page"] == "🚑 Projet SmartRescue - GenAI / RAG":
+        smartrescue_page()
+    elif st.session_state["page"] == "📊 Projet Package R - MNLM":
+        mnlm_page()
 
-    if st.sidebar.button("🚑 Projet SmartRescue - GenAI / RAG"):
-        st.session_state["page"] = "🚑 Projet SmartRescue - GenAI / RAG"  
-
-    if st.sidebar.button("📊 Projet Package R - MNLM"):
-        st.session_state["page"] = "📊 Projet Package R - MNLM"   
-
-    #Page par défaut
+    # Page par défaut
     if "page" not in st.session_state:
         st.session_state["page"] = "🚀 Accueil"
 
@@ -56,30 +65,16 @@ def main():
         st.write("J'ai décidé en 2023 de me spécialiser en Data Science. Pour se faire, je me suis formé dans un premier temps en auto didacte, puis à travers un premier bootcamp chez Jedha. Enfin, en 2024 j'ai intégré le Master 2 - Statistiques et Informatique pour la Science des Données (SISE) à l'université Lumière Lyon 2 afin de terminer ma formation.")
         st.write("Fort de mes expériences passées, en libéral et en entrepreneuriat, j’ai construis mon parcours en mettant au premier plan ma curiosité et ma persévérance. Mon profil est atypique, mêlant chefferie de projet, santé et Data Science.\n\n")
 
-
         st.header("📄 Mon CV")
         pdf_path = "assets/CV_Pierre BOURBON.pdf"
         with open(pdf_path, "rb") as f:
             pdf_file = f.read()
             pdf_viewer(pdf_file)
-        
+
         st.header("📩 Me Contacter")
-        st.write("📧 Email : contact@monportfolio.com")
+        st.write("📧 Email : bourbonpierre@outlook.fr")
         st.write("🔗 [LinkedIn](https://fr.linkedin.com/in/pierre-bourbon-7b6b7012a)")
         st.write("📂 [GitHub](https://github.com/pbrbn)")
-
-    # --------- PROJETS (Appel des fichiers) -----------
-    elif st.session_state["page"] == "💪 Projet Hygé - Data Management":
-        hyge_page()
-
-    elif st.session_state["page"] == "🍴 Projet TripAdvisor - NLP":
-        tripadvisor_page()
-
-    elif st.session_state["page"] == "🚑 Projet SmartRescue - GenAI / RAG":
-        smartrescue_page()
-
-    elif st.session_state["page"] == "📊 Projet Package R - MNLM":
-        mnlm_page()
 
     # --------- PIED DE PAGE -----------
     st.sidebar.markdown("---")

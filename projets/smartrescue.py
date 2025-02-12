@@ -11,7 +11,7 @@ def smartrescue_page():
     # Descriptif du projet
     st.header("📌 Description du projet")
     st.write(
-        "Dans des situations d'urgence, chaque seconde compte. **SmartRescue** est une application révolutionnaire conçue pour soutenir "
+        "Dans des situations d'urgence, chaque seconde compte. **SmartRescue** est une application innovante conçue pour soutenir "
         "les opérateurs d'urgence grâce à l'intégration d'un **LLM (Large Language Model)** et d'un **RAG (Retrieval-Augmented Generation)**. "
         "Cette technologie de pointe permet de fournir une **assistance rapide et précise**, aidant les opérateurs à prendre des décisions éclairées "
         "en temps réel, et ce, à chaque appel d'urgence."
