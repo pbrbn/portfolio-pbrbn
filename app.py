@@ -25,38 +25,41 @@ hide_menu = """
 st.markdown(hide_menu, unsafe_allow_html=True)
 
 def main():
+
+    # Initialisation de la session state
+    if "page" not in st.session_state:
+        st.session_state["page"] = "🚀 Accueil"
+
     # --------- MENU LATÉRAL -----------
     st.sidebar.title("📁 Menu de navigation")
 
-    # Choix principal
-    main_choice = st.sidebar.selectbox("Sélectionnez une catégorie", ["🚀 Accueil", "🌟 Projet entrepreneurial", "🎓 Projets Master SISE"])
+    if st.sidebar.button("🚀 Accueil"):
+        st.session_state["page"] = "🚀 Accueil"
 
-    # Sous-sélection pour les projets Master SISE
-    if main_choice == "🎓 Projets Master SISE":
-        sub_choice = st.sidebar.selectbox("Sélectionnez un projet", [
-            "🍴 Projet TripAdvisor - NLP",
-            "🚑 Projet SmartRescue - GenAI / RAG",
-            "📊 Projet Package R - MNLM"
-        ])
-        st.session_state["page"] = sub_choice
-    elif main_choice == "🌟 Projet entrepreneurial":
+    # Affichage des titres et des projets associés
+    st.sidebar.markdown("## 🌟 Projet entrepreneurial")
+    if st.sidebar.button("💪 Projet Hygé - Data Management"):
         st.session_state["page"] = "💪 Projet Hygé - Data Management"
-    else:
-        st.session_state["page"] = main_choice
+
+    st.sidebar.markdown("## 🎓 Projets Master SISE")
+    if st.sidebar.button("🍴 Projet TripAdvisor - NLP"):
+        st.session_state["page"] = "🍴 Projet TripAdvisor - NLP"
+    if st.sidebar.button("🚑 Projet SmartRescue - GenAI / RAG"):
+        st.session_state["page"] = "🚑 Projet SmartRescue - GenAI / RAG"
+    if st.sidebar.button("📊 Projet Package R - MNLM"):
+        st.session_state["page"] = "📊 Projet Package R - MNLM"
 
     # Affichage des pages en fonction de la sélection
-    if st.session_state["page"] == "💪 Projet Hygé - Data Management":
+    if st.session_state.get("page") == "💪 Projet Hygé - Data Management":
         hyge_page()
-    elif st.session_state["page"] == "🍴 Projet TripAdvisor - NLP":
+    elif st.session_state.get("page") == "🍴 Projet TripAdvisor - NLP":
         tripadvisor_page()
-    elif st.session_state["page"] == "🚑 Projet SmartRescue - GenAI / RAG":
+    elif st.session_state.get("page") == "🚑 Projet SmartRescue - GenAI / RAG":
         smartrescue_page()
-    elif st.session_state["page"] == "📊 Projet Package R - MNLM":
+    elif st.session_state.get("page") == "📊 Projet Package R - MNLM":
         mnlm_page()
-
-    # Page par défaut
-    if "page" not in st.session_state:
-        st.session_state["page"] = "🚀 Accueil"
+    else:
+        st.title("🚀 Accueil")
 
     # --------- PAGE ACCUEIL -----------
     if st.session_state["page"] == "🚀 Accueil":
@@ -66,11 +69,7 @@ def main():
         st.write("Fort de mes expériences passées, en libéral et en entrepreneuriat, j’ai construis mon parcours en mettant au premier plan ma curiosité et ma persévérance. Mon profil est atypique, mêlant chefferie de projet, santé et Data Science.\n\n")
 
         st.header("📄 Mon CV")
-        pdf_path = "assets/CV_Pierre BOURBON.pdf"
-        with open(pdf_path, "rb") as f:
-            pdf_file = f.read()
-            pdf_viewer(pdf_file)
-
+        
         st.header("📩 Me Contacter")
         st.write("📧 Email : bourbonpierre@outlook.fr")
         st.write("🔗 [LinkedIn](https://fr.linkedin.com/in/pierre-bourbon-7b6b7012a)")
